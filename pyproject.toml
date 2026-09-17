@@ -11,3 +11,5 @@ dependencies = ["numpy>=1.26", "networkx>=3.2", "scikit-learn>=1.4", "neuprint-p
 dev = ["pytest>=8"]
 [tool.setuptools]
 py-modules = ["reservoir", "data", "demo"]
+[tool.pytest.ini_options]
+testpaths = ["test_reservoir.py"]
