@@ -2,6 +2,16 @@
 
 Research scaffold for testing whether a fixed biological connectome is a useful recurrent reservoir for plasma time-series prediction.
 
+## 30-second picture
+
+```text
+plasma diagnostic history -> fixed connectome reservoir -> linear readout -> forecast / transition score
+                                  |
+                                  +-> compare with rewired, random and standard ESN reservoirs
+```
+
+The connectome is only the recurrent wiring prior. It is not a simulated fly mind. The experiment asks one clean question: under identical inputs, readout capacity and tuning budget, does that wiring generalize across held-out plasma shots better than honest null graphs?
+
 ## Question
 
 Does a tractable subgraph of the *Drosophila* male CNS connectome provide more useful memory, nonlinear separation, or robustness than matched random reservoirs on plasma signals?
@@ -37,7 +47,7 @@ python -m venv .venv
 source .venv/bin/activate
 pip install -e ".[dev]"
 pytest
-python -m connectome_plasma.demo
+python demo.py
 ```
 
 To query neuPrint, set `NEUPRINT_TOKEN` in your environment. Never commit the token.
