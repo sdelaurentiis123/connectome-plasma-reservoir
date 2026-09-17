@@ -35,7 +35,7 @@ A positive result requires consistent out-of-sample gains over null graphs. A ne
 ```bash
 python -m venv .venv
 source .venv/bin/activate
-pip install -e .
+pip install -e ".[dev]"
 pytest
 python -m connectome_plasma.demo
 ```
@@ -57,3 +57,18 @@ Male CNS data: FlyEM at HHMI Janelia, Cambridge Connectomics Group, Google Resea
 ## License
 
 MIT for code in this repository. External datasets retain their own terms.
+
+## Non-negotiable design constraints
+
+1. **Independent N means whole experiments.** Replication and final validation use held-out plasma shots or independent acquisition periods, not windows cut from one trajectory. A time split of one shot is not evidence of cross-shot generalization.
+2. **No pseudo-replication.** Re-running deterministic code does not create seeds. State the independent unit and vary genuinely stochastic initializations, graph draws, shots, or campaigns.
+3. **Keep physical variables physical.** Geometry-sensitive inputs retain their metric/Jacobian, diagnostic channels use causal timestamps, and no transform may erase units or physical meaning without an explicit test.
+4. **Prove state sufficiency before architecture search.** Establish that the chosen diagnostic history contains predictive information for the target before tuning reservoir topology.
+5. **Null models are the experiment.** Persistence, linear autoregression/readouts, matched echo-state networks, degree-preserving rewires, and matched random graphs receive the same tuning budget and evaluation.
+6. **Fail closed numerically.** NaNs, infinities, singular fits, and undefined metrics invalidate the run. Never zero-fill or clip them and keep a headline metric.
+7. **Tests test the math.** Tests check causality, split isolation, reservoir updates, fills, accounting, invariants, and failure modes, not only file existence or schema shape.
+8. **One canonical definition per result.** Each target, split, fill, PnL field, and headline metric has one implementation and one recorded provenance.
+9. **Launchers are immutable and non-destructive.** Runs write versioned outputs and fail safely. No broad or unconditional `rm -f`; raw data and prior results stay immutable.
+10. **A clean clone must reproduce the run.** `requirements-lock.txt` records the exact tested environment. Dependency changes require a new lock and clean-environment test.
+11. **Code stays proportional to evidence.** Add infrastructure only when an experiment needs it; do not bury an untested idea under production-shaped code.
+12. **Claims track evidence.** Until repeated held-out evidence exists, call this a scaffold or a paper-trading experiment, not an advantage, alpha, or validated biological mechanism.
